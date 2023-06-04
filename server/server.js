@@ -4,6 +4,10 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 
 // import routes
+import AuthRoute from "./routes/AuthRoute.js";
+import UserRoute from "./routes/UserRoute.js";
+import PostRoute from "./routes/PostRoute.js";
+import UploadRoute from "./routes/UploadRoute.js";
 
 const app = express();
 
@@ -25,7 +29,15 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// to serve images inside public folder
+app.use(express.static("public"));
+app.use("/images", express.static("images"));
+
 // Routes
+app.use("/auth", AuthRoute);
+app.use("/user", UserRoute);
+app.use("/posts", PostRoute);
+app.use("/upload", UploadRoute);
 
 // PORT
 const PORT = process.env.PORT || 8000;
