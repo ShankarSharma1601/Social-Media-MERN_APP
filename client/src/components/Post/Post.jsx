@@ -24,7 +24,9 @@ const Post = ({ post }) => {
           style={{ fontSize: "1.5rem" }}
         ></i>
       </div>
-      <span>{post.likes} likes</span>
+      <span style={{ color: "var(--gray)", fontSize: "12px" }}>
+        {post.likes} likes
+      </span>
 
       <div className="detail">
         <span>
