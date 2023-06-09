@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import cors from "cors";
 
 // import routes
 import AuthRoute from "./routes/AuthRoute.js";
@@ -27,6 +28,7 @@ const connectDB = async () => {
 // middlewares
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 // to serve images inside public folder

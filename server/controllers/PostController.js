@@ -1,5 +1,5 @@
-import postModel from "../models/postModel";
-import userModel from "../models/userModel";
+import postModel from "../models/postModel.js";
+import userModel from "../models/userModel.js";
 import mongoose from "mongoose";
 
 // create post
