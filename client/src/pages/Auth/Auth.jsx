@@ -1,38 +1,74 @@
 import React, { useState } from "react";
 import "./Auth.css";
+import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+import {
+  loginFailed,
+  loginStart,
+  loginSuccess,
+} from "../../redux/features/userSlice";
+import axios from "axios";
 
 const Auth = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [data, setData] = useState({
+  const initialState = {
     firstname: "",
     lastname: "",
     username: "",
     password: "",
     confirmpassword: "",
-  });
+  };
+
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [data, setData] = useState(initialState);
   const [confirmPass, setConfirmPass] = useState(true);
 
+  const dispatch = useDispatch();
+  //const navigate = useNavigate();
+  const { isLoading } = useSelector((state) => state.user);
+  console.log(isLoading);
+
+  // handle change in input
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // Form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (isSignUp) {
-      if (data.password !== data.confirmpassword) setConfirmPass(false);
+    setConfirmPass(true);
+    dispatch(loginStart());
+    try {
+      if (isSignUp) {
+        if (data.password === data.confirmpassword) {
+          const res = await axios.post(
+            "http://localhost:8000/auth/register",
+            data
+          );
+          dispatch(loginSuccess(res.data));
+          console.log(res);
+          //alert("Register Successful");
+          //navigate("/login");
+        } else {
+          setConfirmPass(false);
+        }
+      } else {
+        const res = await axios.post("http://localhost:8000/auth/login", data);
+        dispatch(loginSuccess(res.data));
+        console.log(res);
+        //alert("Login Successful");
+        //navigate("/");
+      }
+    } catch (error) {
+      dispatch(loginFailed());
+      console.log(error);
+      alert("Something went wrong");
     }
   };
 
+  // reset form
   const resetForm = () => {
-    setConfirmPass(true);
-    setData({
-      firstname: "",
-      lastname: "",
-      username: "",
-      password: "",
-      confirmpassword: "",
-    });
+    setConfirmPass(confirmPass);
+    setData(initialState);
   };
 
   return (
@@ -126,8 +162,12 @@ const Auth = () => {
                 : "Don't have an account. Sign Up!"}
             </span>
 
-            <button className="button infoButton" type="submit">
-              {isSignUp ? "Signup" : "Log In"}
+            <button
+              className="button infoButton"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : isSignUp ? "Signup" : "Log In"}
             </button>
           </div>
         </form>
