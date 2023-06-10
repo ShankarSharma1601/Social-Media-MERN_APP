@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Auth.css";
 import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   loginFailed,
   loginStart,
@@ -23,7 +23,7 @@ const Auth = () => {
   const [confirmPass, setConfirmPass] = useState(true);
 
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.user);
   console.log(isLoading);
 
@@ -47,7 +47,7 @@ const Auth = () => {
           dispatch(loginSuccess(res.data));
           console.log(res);
           //alert("Register Successful");
-          //navigate("/login");
+          navigate("/login");
         } else {
           setConfirmPass(false);
         }
@@ -56,7 +56,7 @@ const Auth = () => {
         dispatch(loginSuccess(res.data));
         console.log(res);
         //alert("Login Successful");
-        //navigate("/");
+        navigate("/");
       }
     } catch (error) {
       dispatch(loginFailed());
@@ -91,6 +91,7 @@ const Auth = () => {
           {isSignUp && (
             <div>
               <input
+                required
                 type="text"
                 placeholder="First Name"
                 className="infoInput"
@@ -99,6 +100,7 @@ const Auth = () => {
                 value={data.firstname}
               />
               <input
+                required
                 type="text"
                 placeholder="Last Name"
                 className="infoInput"
@@ -110,6 +112,7 @@ const Auth = () => {
           )}
           <div>
             <input
+              required
               type="text"
               placeholder="Username"
               className="infoInput"
@@ -120,6 +123,7 @@ const Auth = () => {
           </div>
           <div>
             <input
+              required
               type="password"
               placeholder="Password"
               className="infoInput"
@@ -129,6 +133,7 @@ const Auth = () => {
             />
             {isSignUp && (
               <input
+                required
                 type="password"
                 placeholder="Confirm Password"
                 className="infoInput"
@@ -151,7 +156,11 @@ const Auth = () => {
           </span>
           <div>
             <span
-              style={{ fontSize: "12px", cursor: "pointer" }}
+              style={{
+                fontSize: "12px",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
               onClick={() => {
                 setIsSignUp((prev) => !prev);
                 resetForm();

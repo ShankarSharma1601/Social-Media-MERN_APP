@@ -1,8 +1,11 @@
 import React from "react";
 import "./ProfileCard.css";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const ProfileCard = () => {
-  const ProfilePage = true;
+const ProfileCard = ({ location }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  //const ProfilePage = true;
   return (
     <div className="ProfileCard">
       <div className="ProfileImages">
@@ -17,24 +20,28 @@ const ProfileCard = () => {
         />
       </div>
       <div className="ProfileName">
-        <span>Name</span>
-        <span>Designation</span>
+        <span>
+          {currentUser.firstname} {currentUser.lastname}
+        </span>
+        <span>
+          {currentUser.worksAt ? currentUser.worksAt : "Write about yourself"}
+        </span>
       </div>
 
       <div className="followStatus">
         <hr />
         <div>
           <div className="follow">
-            <span>6,980</span>
-            <span>Followings</span>
+            <span>{currentUser.followers.length}</span>
+            <span>Followers</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
-            <span>1</span>
-            <span>Followers</span>
+            <span>{currentUser.following.length}</span>
+            <span>Following</span>
           </div>
 
-          {ProfilePage && (
+          {location === "profilePage" && (
             <>
               <div className="vl"></div>
               <div className="follow">
@@ -47,7 +54,18 @@ const ProfileCard = () => {
         <hr />
       </div>
 
-      {ProfilePage ? "" : <span>My Profile</span>}
+      {location === "profilePage" ? (
+        ""
+      ) : (
+        <span>
+          <Link
+            to={`/profile/${user._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            My Profile
+          </Link>
+        </span>
+      )}
     </div>
   );
 };

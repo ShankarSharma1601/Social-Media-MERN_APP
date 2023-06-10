@@ -1,16 +1,39 @@
 import React, { useState, useRef } from "react";
 import "./PostShare.css";
+import { useSelector } from "react-redux";
 
 const PostShare = () => {
   const [image, setImage] = useState(null);
   const imageRef = useRef();
+  const desc = useRef();
+  const { currentUser } = useSelector((state) => state.user);
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
-      setImage({
-        image: URL.createObjectURL(img),
-      });
+      setImage(img);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newPost = {
+      userId: currentUser._id,
+      desc: desc.current.value,
+    };
+
+    if (image) {
+      const data = new FormData();
+      const filename = Date.now + image.name;
+      data.append("name", filename);
+      data.append("file", image);
+      newPost.image = filename;
+      console.log(newPost);
+      try {
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -21,7 +44,12 @@ const PostShare = () => {
         alt=""
       />
       <div>
-        <input type="text" placeholder="What's happening....." />
+        <input
+          ref={desc}
+          required
+          type="text"
+          placeholder="What's happening....."
+        />
 
         <div className="postOptions">
           <div
@@ -49,7 +77,9 @@ const PostShare = () => {
           >
             <i className="fa-solid fa-calendar-days"></i> Schedule
           </div>
-          <button className="button ps-button">Share</button>
+          <button className="button ps-button" onClick={handleSubmit}>
+            Share
+          </button>
           <div style={{ display: "none" }}>
             <input
               type="file"
@@ -65,7 +95,7 @@ const PostShare = () => {
               onClick={() => setImage(null)}
               className="fa-regular fa-circle-xmark"
             ></i>
-            <img src={image.image} alt="" />
+            <img src={URL.createObjectURL(image)} alt="" />
           </div>
         )}
       </div>
