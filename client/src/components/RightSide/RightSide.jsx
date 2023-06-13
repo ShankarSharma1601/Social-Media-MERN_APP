@@ -8,10 +8,10 @@ const RightSide = () => {
   return (
     <div className="RightSide">
       <div className="navIcons">
-        <i class="fa-solid fa-house"></i>
-        <i class="fa-solid fa-gear"></i>
-        <i class="fa-solid fa-bell"></i>
-        <i class="fa-solid fa-comment"></i>
+        <i className="fa-solid fa-house"></i>
+        <i className="fa-solid fa-gear"></i>
+        <i className="fa-solid fa-bell"></i>
+        <i className="fa-solid fa-comment"></i>
       </div>
       <TrendCard />
 
