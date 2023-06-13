@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 
-const secret = process.env.JWT;
 const authMiddleware = async (req, res, next) => {
   try {
+    //console.log(req.headers);
+    const secret = process.env.JWT;
     const token = req.headers.authorization.split(" ")[1];
-    console.log(token);
+    //console.log(token);
     if (token) {
       const decoded = jwt.verify(token, secret);
       console.log(decoded);

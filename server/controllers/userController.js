@@ -23,7 +23,7 @@ export const getUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     let users = await userModel.find();
-    users = users.mao((user) => {
+    users = users.map((user) => {
       const { password, ...otherDetails } = user._doc;
       return otherDetails;
     });

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 const ProfileCard = ({ location }) => {
   const { currentUser } = useSelector((state) => state.user);
+  // console.log(currentUser.user);
   //const ProfilePage = true;
   return (
     <div className="ProfileCard">
@@ -21,10 +22,12 @@ const ProfileCard = ({ location }) => {
       </div>
       <div className="ProfileName">
         <span>
-          {currentUser.firstname} {currentUser.lastname}
+          {currentUser.user.firstname} {currentUser.user.lastname}
         </span>
         <span>
-          {currentUser.worksAt ? currentUser.worksAt : "Write about yourself"}
+          {currentUser.user.worksAt
+            ? currentUser.user.worksAt
+            : "Write about yourself"}
         </span>
       </div>
 
@@ -32,12 +35,15 @@ const ProfileCard = ({ location }) => {
         <hr />
         <div>
           <div className="follow">
-            <span>{currentUser.followers.length}</span>
+            {/* {console.log(currentUser.followers)} */}
+            <span>{currentUser.user.followers.length}</span>
+            {/* <span>1</span> */}
             <span>Followers</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
-            <span>{currentUser.following.length}</span>
+            <span>{currentUser.user.following.length}</span>
+            {/* <span>3</span> */}
             <span>Following</span>
           </div>
 
@@ -59,7 +65,7 @@ const ProfileCard = ({ location }) => {
       ) : (
         <span>
           <Link
-            to={`/profile/${user._id}`}
+            to={`/profile/${currentUser.user._id}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             My Profile

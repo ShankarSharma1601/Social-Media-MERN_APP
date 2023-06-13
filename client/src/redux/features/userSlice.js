@@ -24,10 +24,21 @@ export const userSlice = createSlice({
     logout: (state) => {
       return initialState;
     },
+    following: (state, action) => {
+      if (state.currentUser.user.following.includes(action.payload)) {
+        state.currentUser.user.following.splice(
+          state.currentUser.user.following.findIndex(
+            (followingId) => followingId === action.payload
+          )
+        );
+      } else {
+        state.currentUser.user.following.push(action.payload);
+      }
+    },
   },
 });
 
-export const { loginFailed, loginStart, loginSuccess, logout } =
+export const { loginFailed, loginStart, loginSuccess, logout, following } =
   userSlice.actions;
 
 export default userSlice.reducer;
